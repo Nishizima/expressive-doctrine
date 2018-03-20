@@ -1,0 +1,53 @@
+<?php $this->headTitle('Home'); ?>
+
+<div class="jumbotron">
+    <h3>Produtos</h3>
+
+    <?php echo $this->form()->openTag($this->form->setAttribute('action', $this->url('products.create'))); ?>
+
+    <?php echo $this->formLabel($this->form->get('name')) ?>
+    <?php echo $this->formElement($this->form->get('name')) ?>
+
+
+    <?php echo $this->formLabel($this->form->get('price')) ?>
+    <?php echo $this->formElement($this->form->get('price')) ?>
+
+
+    <?php echo $this->formLabel($this->form->get('description')) ?>
+    <?php echo $this->formElement($this->form->get('description')) ?>
+
+    <?php echo $this->formElement($this->form->get('submit')->setLabel('Cadastrar')); ?>
+
+
+    <?php echo $this->form()->closeTag(); ?>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php
+        foreach ($this->products as $key => $cada)
+        {
+            echo '<tr>
+                    <td>'.($key+1).'</td>
+                    <td>'.$cada->name.'</td>
+                    <td>'.$cada->price.'</td>
+                    <td>'.$cada->description.'</td>
+                  </tr>';
+        }
+
+        ?>
+
+        </tbody>
+    </table>
+
+
+</div>
