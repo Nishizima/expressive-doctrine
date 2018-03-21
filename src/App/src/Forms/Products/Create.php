@@ -10,6 +10,7 @@ namespace App\Forms\Products;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\Hydrator\ClassMethods;
 
 class Create extends Form
 {
@@ -17,6 +18,13 @@ class Create extends Form
     {
         parent::__construct($name, $options);
 
+
+        $this->setHydrator(new ClassMethods());
+
+        $this->add([
+            'name' => 'id',
+            'type' => Element\Hidden::class,
+        ]);
         $this->add([
             'name' => 'name',
             'type' => Element\Text::class,

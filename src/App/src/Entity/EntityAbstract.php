@@ -15,11 +15,17 @@ abstract class EntityAbstract
     public function __call($name, $arguments)
     {
         $started_string = substr($name,0,3);
-        if($started_string === "get" or $started_string === "set")
+
+        $propertie = substr($name,3);
+        $propertie = strtolower($propertie);
+
+        if($started_string === "get")
         {
-            $propertie = substr($name,3);
-            $propertie = strtolower($propertie);
-            $this->$propertie = $arguments[0];
+            return $this->$propertie;
+        }
+        elseif($started_string === "set")
+        {
+            return $this->$propertie = $arguments[0];
         }
         // TODO: Implement __call() method.
     }
@@ -37,10 +43,11 @@ abstract class EntityAbstract
 
     public function __set($name, $value)
     {
-        $methodName = $this->toMethod($name,'get');
+        $methodName = $this->toMethod($name,'set');
         if(method_exists($this,$methodName))
         {
-            return $this->$name = $this->$methodName($value);
+            $this->$methodName($value);
+            return $value;
         }
         return $this->$name = $value;
     }

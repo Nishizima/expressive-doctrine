@@ -31,4 +31,6 @@
 $app->get('/', App\Action\HomePageAction::class, 'home');
 $app->get('/api/ping', App\Action\PingAction::class, 'api.ping');
 $app->get('/admin/products', App\Action\ProductsListAction::class, 'products.list');
-$app->post('/admin/products/create', App\Action\ProductsCreateAction::class, 'products.create');
+$app->route('/admin/products/create', App\Action\ProductsCreateAction::class, ['GET','POST'], 'products.create');
+$app->route('/admin/products/update/{id}', App\Action\ProductsUpdateAction::class, ['GET','POST'], 'products.update');
+$app->get('/admin/products/delete/{id}', App\Action\ProductsDeleteAction::class, 'products.delete');

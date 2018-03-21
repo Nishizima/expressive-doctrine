@@ -21,12 +21,11 @@ use Zend\Expressive\Router\RouterInterface;
 use Zend\Expressive\Template\TemplateRendererInterface;
 use Zend\Hydrator\ClassMethods;
 
-class ProductsCreateAction implements MiddlewareInterface
+class ProductsUpdateAction implements MiddlewareInterface
 {
     private $template;
 
     private $entityManager;
-    
     private $router;
 
     /**
@@ -36,38 +35,42 @@ class ProductsCreateAction implements MiddlewareInterface
      */
     public function __construct(RouterInterface $router, TemplateRendererInterface $template, EntityManager $entityManager)
     {
-        $this->router = $router;
         $this->template = $template;
+        $this->router = $router;
         $this->entityManager = $entityManager;
     }
 
     public function process(ServerRequestInterface $request, DelegateInterface $delegate)
     {
+        $repository = $this->entityManager->getRepository(Products::class);
+
+        $dados = $repository->findOneBy(['id' => $request->getAttribute('id')]);
+
         $form = new productCreate();
-        $form->setHydrator(new ClassMethods());
-        $form->bind(new Products());
+        $form->bind($dados);
 
         if($request->getMethod() === 'POST')
         {
             $data = $request->getParsedBody();
 
             $form->setData($data);
-
             if($form->isValid())
             {
-                $entity = $form->getData();
-                //print_r($entity); exit;
-                $this->entityManager->persist($entity);
                 $this->entityManager->flush();
+
+                $uri = $this->router->generateUri('products.list');
+                return new RedirectResponse($uri);
             }
-            $uri = $this->router->generateUri('products.list');
-            return new RedirectResponse($uri);
         }
 
-        return new HtmlResponse($this->template->render('app::products-create',['form'=>$form]));
 
 
+        $repository = $this->entityManager->getRepository(Products::class);
+        $products = $repository->findAll();
 
+
+        return new HtmlResponse($this->template->render('app::products-update',['form'=>$form]));
+        // TODO: Implement process() method.
     }
 
 

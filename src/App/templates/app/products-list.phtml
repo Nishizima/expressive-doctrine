@@ -1,53 +1,39 @@
-<?php $this->headTitle('Home'); ?>
-
-<div class="jumbotron">
-    <h3>Produtos</h3>
-
-    <?php echo $this->form()->openTag($this->form->setAttribute('action', $this->url('products.create'))); ?>
-
-    <?php echo $this->formLabel($this->form->get('name')) ?>
-    <?php echo $this->formElement($this->form->get('name')) ?>
-
-
-    <?php echo $this->formLabel($this->form->get('price')) ?>
-    <?php echo $this->formElement($this->form->get('price')) ?>
-
-
-    <?php echo $this->formLabel($this->form->get('description')) ?>
-    <?php echo $this->formElement($this->form->get('description')) ?>
-
-    <?php echo $this->formElement($this->form->get('submit')->setLabel('Cadastrar')); ?>
-
-
-    <?php echo $this->form()->closeTag(); ?>
-
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Description</th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <?php
-        foreach ($this->products as $key => $cada)
-        {
-            echo '<tr>
-                    <td>'.($key+1).'</td>
-                    <td>'.$cada->name.'</td>
-                    <td>'.$cada->price.'</td>
-                    <td>'.$cada->description.'</td>
-                  </tr>';
-        }
-
-        ?>
-
-        </tbody>
-    </table>
-
-
+<?php
+/** @var \App\Entity\Product $product */
+?>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <a href="<?php echo $this->url('products.create');?>" class="btn btn-primary">
+                <i class="fa fa-plus-circle"></i> Novo
+            </a>
+        </div>
+        <div class="panel-body">
+            <?php
+            echo $this->form()->openTag(new \Zend\Form\Form());
+            echo $this->form()->closeTag();
+            ?>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+                <?php foreach ($this->products as $product): ?>
+                    <tr>
+                        <td><?php echo $this->escapeHtml($product->getName()); ?></td>
+                        <td><?php echo $product->getPrice(); ?></td>
+                        <td><?php echo $product->getDescription(); ?></td>
+                        <td>
+                            <a href="<?php echo $this->url('products.update', ['id' => $product->getId()]);?>">Editar</a> |
+                            <a href="<?php echo $this->url('products.delete', ['id' => $product->getId()]);?>">Excluir</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

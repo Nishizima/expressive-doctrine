@@ -40,6 +40,8 @@ class ConfigProvider
                 Action\HomePageAction::class => Action\HomePageFactory::class,
                 Action\ProductsListAction::class => Action\ProductsListFactory::class,
                 Action\ProductsCreateAction::class => Action\ProductsCreateFactory::class,
+                Action\ProductsUpdateAction::class => Action\ProductsUpdateFactory::class,
+                Action\ProductsDeleteAction::class => Action\ProductsDeleteFactory::class,
             ],
         ];
     }
